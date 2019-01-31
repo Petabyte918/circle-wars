@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../server/components/Dynamic.js"],"names":["Dynamic","name","dirty"],"mappings":";;;;;;;;IAAaA,O,WAAAA,O;;;SACTC,I,GAAO,S;SACPC,K,GAAQ,K","file":"Dynamic.js","sourcesContent":["export class Dynamic {\r\n    name = 'dynamic'\r\n    dirty = false\r\n}"]}

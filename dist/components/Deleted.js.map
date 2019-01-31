@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../server/components/Deleted.js"],"names":["Deleted","name","value"],"mappings":";;;;;;;;IAAaA,O,WAAAA,O;;;SACTC,I,GAAO,S;SACPC,K,GAAQ,I","file":"Deleted.js","sourcesContent":["export class Deleted {\r\n    name = 'deleted'\r\n    value = true\r\n}"]}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../server/components/physics/Drag.js"],"names":["Drag","name"],"mappings":";;;;;;;;IAAaA,I,WAAAA,I,GAGT,gBAAc;AAAA;;AAAA,SAFdC,IAEc,GAFP,MAEO;AAAE,C","file":"Drag.js","sourcesContent":["export class Drag {\r\n    name = 'drag'\r\n    value\r\n    constructor() {}\r\n}"]}
