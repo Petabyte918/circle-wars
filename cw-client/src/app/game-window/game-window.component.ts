@@ -1,0 +1,198 @@
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { WebsocketService } from '../websocket/websocket.service'
+import { EntitiesService } from '../entities/entities.service'
+import { PhysicsSystem } from '../../../../dist/systems/Physics'
+
+@Component({
+  selector: 'app-game-window',
+  templateUrl: './game-window.component.html',
+  styleUrls: ['./game-window.component.css']
+})
+export class GameWindowComponent implements AfterViewInit {
+
+  @ViewChild('canvas') canvas: ElementRef
+  private context: CanvasRenderingContext2D
+  private playerPosition
+
+  private frameCount = 0
+  private dirtyFrameCount = 0
+
+  private timeLastFrame
+  private ticLength
+
+  private serverPhysics = new PhysicsSystem()
+
+  private up = false
+  private left = false
+  private down = false
+  private right = false
+
+  constructor(
+    private io : WebsocketService,
+    private e: EntitiesService,
+  ) {
+    console.log('connecting')
+    io.connect()
+   }
+
+  ngAfterViewInit() {
+    this.context = (this.canvas.nativeElement as HTMLCanvasElement).getContext('2d');
+    this.context.translate(300,150)
+    console.log(this.context)
+    this.draw()
+  }
+  
+  private draw() {
+    requestAnimationFrame(() => this.draw())
+    this.context.fillStyle = '#666'
+    this.context.fillRect(-300,-150,600,300)
+    if (this.e.entities) {
+      this.context.save()
+
+      this.calculateDirtyFrames()
+      this.extrapolate()
+      this.translateScreenToPlayer(this.e.entities[this.e.playerEntityId])
+      this.drawOtherEntities(this.e.entities)
+      this.drawPlayer(this.e.entities[this.e.playerEntityId])
+      this.e.dirty = false
+
+      this.context.restore()
+    }
+  }
+
+  private calculateDirtyFrames() {
+    if (!this.timeLastFrame) this.timeLastFrame = new Date().getTime()
+    this.ticLength = new Date().getTime() - this.timeLastFrame
+    this.timeLastFrame = new Date().getTime()
+
+    this.frameCount++
+    if (this.e.dirty) {
+      this.dirtyFrameCount++
+    }
+  }
+
+  private extrapolate() {
+    if (this.e.dirty) return
+    for (let entityId in this.e.entities) {
+      this.serverPhysics.physicsExtrapolation(this.e.entities[entityId], this.ticLength, this.e.pick(e => (e.components.collider && !e.components.dynamic)))
+    }
+  }
+
+  private translateScreenToPlayer(entity) {
+    this.playerPosition = entity.components.position
+    this.context.translate(-entity.components.position.x, -entity.components.position.y)
+  }
+
+  private drawPlayer(entity) {
+    this.drawPlayerEntity(entity, '#600')
+  }
+
+  private drawOtherEntities(entities) {
+    for (let id in entities) {
+      if (id === this.e.playerEntityId) continue
+      let entity = entities[id]
+      if (entity.components.collider){
+        if (entity.components.collider.type === 'circle') {
+          this.drawPlayer(entity)
+        } else if(entity.components.collider.type === 'rect') {
+          this.drawRect(entity.components.position.x + entity.components.collider.offsetX, entity.components.position.y + entity.components.collider.offsetY, entity.components.collider.width, entity.components.collider.height)
+        }
+      }
+    }
+  }
+
+  private drawPlayerEntity(entity, color) {
+    const x = entity.components.position.x + entity.components.collider.offsetX
+    const y = entity.components.position.y + entity.components.collider.offsetY
+    const rot = entity.components.rotation.value
+    const rad = entity.components.collider.radius
+    this.context.save()
+    this.context.translate(x,y)
+    this.context.rotate(rot)
+    this.drawCircle(0,0, rad, color)
+    this.context.beginPath()
+    this.context.moveTo(0,0)
+    this.context.lineTo(rad,0)
+    this.context.lineWidth = 2
+    this.context.stroke()
+    this.context.restore()
+  }
+
+  private drawCircle(x,y,r,c) {
+    this.context.beginPath();
+    this.context.arc(x, y, r, 0, 2 * Math.PI, true);
+    this.context.fillStyle = '#faa'
+    this.context.fill()
+
+    this.context.lineWidth = 3
+    this.context.strokeStyle = c || '#006'
+    this.context.stroke()
+  }
+
+  private drawRect(x,y,w,h) {
+    h = h || w
+    this.context.beginPath();
+    this.context.rect(x-w/2, y-h/2, w, h);
+    this.context.fillStyle = '#faa'
+    this.context.fill()
+
+    this.context.lineWidth = 3
+    this.context.strokeStyle = '#006'
+    this.context.stroke()
+  }
+
+  private keyDown(e) {
+    if (e.key === 'w' || e.key === 'ArrowUp') {
+      if (!this.up) {
+        this.up = true
+        this.io.startUp()
+      }
+    }
+    if (e.key === 'a' || e.key === 'ArrowLeft') {
+      if (!this.left) {
+        this.left = true
+        this.io.startLeft()
+      }
+    }
+    if (e.key === 's' || e.key === 'ArrowDown') {
+      if (!this.down) {
+        this.down = true
+        this.io.startDown()
+      }
+    }
+    if (e.key === 'd' || e.key === 'ArrowRight') {
+      if (!this.right) {
+        this.right = true
+        this.io.startRight()
+      }
+    }
+  }
+
+  private keyUp(e) {
+    if (e.key === 'w' || e.key === 'ArrowUp') {
+      if (this.up) {
+        this.up = false
+        this.io.endUp()
+      }
+    }
+    if (e.key === 'a' || e.key === 'ArrowLeft') {
+      if (this.left) {
+        this.left = false
+        this.io.endLeft()
+      }
+    }
+    if (e.key === 's' || e.key === 'ArrowDown') {
+      if (this.down) {
+        this.down = false
+        this.io.endDown()
+      }
+    }
+    if (e.key === 'd' || e.key === 'ArrowRight') {
+      if (this.right) {
+        this.right = false
+        this.io.endRight()
+      }
+    }
+  }
+
+}

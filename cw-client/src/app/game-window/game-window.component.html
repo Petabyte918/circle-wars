@@ -1,0 +1,13 @@
+<div>
+    Dirty Ratio:{{(dirtyFrameCount / frameCount).toFixed(2)}}
+</div>
+<div>
+    Frame Length:{{ticLength}}
+</div>
+<div>
+    X:{{playerPosition?.x.toFixed(2)}}
+</div>
+<div>
+    Y:{{playerPosition?.y.toFixed(2)}}
+</div>
+<canvas #canvas width="600" height="300" (document:keydown)="keyDown($event)" (document:keyup)="keyUp($event)"></canvas>
