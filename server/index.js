@@ -1,22 +1,23 @@
-import {Hero} from './prefabs/Hero'
-import {Player} from './components/Player'
-import {TimerSystem} from './systems/Timer'
-import {PhysicsSystem} from './systems/Physics'
-import {EntityBroadcastSystem} from './systems/EntityBroadcast'
-import {Vectors} from './Vectors'
-import {Entity} from './Entity'
-import {Name} from './components/Name'
-import {Position} from './components/physics/Position'
-import {Collider} from './components/physics/Collider'
-import {Physics} from './components/physics/Physics'
-import {Health} from './components/Health'
-import {Dynamic} from './components/Dynamic'
-import {Deleted} from './components/Deleted'
+import { Hero } from './prefabs/Hero'
+import { Player } from './components/Player'
+import { TimerSystem } from './systems/Timer'
+import { PhysicsSystem } from './systems/Physics'
+import { EntityBroadcastSystem } from './systems/EntityBroadcast'
+import { Vectors } from './Vectors'
+import { Entity } from './Entity'
+import { Name } from './components/Name'
+import { Position } from './components/physics/Position'
+import { Collider } from './components/physics/Collider'
+import { Physics } from './components/physics/Physics'
+import { Health } from './components/Health'
+import { Dynamic } from './components/Dynamic'
+import { Deleted } from './components/Deleted'
 
-import {Timer} from './components/generic/Timer'
-import {WarmUpTimer} from './components/combat/WarmUpTimer'
+import { Timer } from './components/generic/Timer'
+import { WarmUpTimer } from './components/combat/WarmUpTimer'
 
-import {Incoming} from './Incoming'
+import { Incoming } from './Incoming'
+import { Spellbook } from './components/combat/spells/Spellbook'
 
 const express = require('express')
 const app = express();
@@ -32,26 +33,30 @@ app.use(express.static('/home/ubuntu/dev/cw-client/dist/cw-client'))
 
 io.on('connection', playerConnect)
 
-http.listen(80, function() {
+http.listen(80, function () {
     console.log('You are now running Circle Wars!');
 });
 
 //test code to add a static entity
 const staticEntity = new Entity()
-    .addComponent(new Position(-50,-50))
+    .addComponent(new Position(-50, -50))
     .addComponent(new Collider('rect'))
     .addComponent(new Timer(2000))
     .addComponent(new WarmUpTimer(2000))
-entities[staticEntity.id] = staticEntity
+addEntity(staticEntity)
 
+function addEntity(entity) {
+    entities[entity.id] = entity
+}
 
 function playerConnect(socket) {
     const hero = new Hero('All Might')
         .addComponent(new Player(socket.id))
-    
+        .addComponent(new Spellbook([new Spell('Frost Nova', true)]))
+
     console.log('a user connected', hero.id)
-    
-    entities[hero.id] = hero
+
+    addEntity(hero)
     socket.emit('connectionEntities', entities)
 
     new Incoming(socket, hero, entities)

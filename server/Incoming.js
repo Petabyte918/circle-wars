@@ -12,7 +12,7 @@ export class Incoming {
 
     combat(socket, hero) {
         socket.on('target', target => {
-            console.log(target)
+            hero.components.player.target = target
         })
     }
 
