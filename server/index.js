@@ -1,8 +1,5 @@
 import { Hero } from './prefabs/Hero'
 import { Player } from './components/Player'
-import { TimerSystem } from './systems/Timer'
-import { PhysicsSystem } from './systems/Physics'
-import { EntityBroadcastSystem } from './systems/EntityBroadcast'
 import { Entity } from './Entity'
 import { Position } from './components/physics/Position'
 import { Collider } from './components/physics/Collider'
@@ -15,7 +12,12 @@ import { Timer } from './components/generic/Timer'
 import { WarmUpTimer } from './components/combat/WarmUpTimer'
 
 import { Incoming } from './Incoming'
+
+import { TimerSystem } from './systems/Timer'
+import { PhysicsSystem } from './systems/Physics'
+import { EntityBroadcastSystem } from './systems/EntityBroadcast'
 import { SpellcasterSystem } from './systems/Spellcaster'
+import { ProjectilesSystem } from './systems/Projectiles'
 
 const express = require('express')
 const app = express();
@@ -30,6 +32,7 @@ const systems = [
     new EntityBroadcastSystem(io),
     new TimerSystem(ticLength),
     new SpellcasterSystem(),
+    new ProjectilesSystem(),
 ]
 
 app.use(express.static('/home/ubuntu/dev/cw-client/dist/cw-client'))
