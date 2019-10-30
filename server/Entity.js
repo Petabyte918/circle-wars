@@ -1,3 +1,6 @@
+import { Timers } from './components/generic/Timers'
+import { Timer } from './components/generic/Timer'
+
 export class Entity {
     id
     components = {}
@@ -10,7 +13,14 @@ export class Entity {
         if (comp.components) {
             this.components = { ...this.components, ...comp.components }
         } else {
-            this.components[comp.name] = comp
+            if (comp instanceof Timer) {
+                if (!this.components.timers) {
+                    this.components.timers = new Timers()
+                }
+                this.components.timers.value.push(comp)
+            } else {
+                this.components[comp.name] = comp
+            }
         }
         return this
     }
