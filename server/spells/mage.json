@@ -1,0 +1,72 @@
+[{
+    name: "Frost Bolt",
+    behaviors: [{
+        behavior: "UnitTarget"
+    }, {
+        behavior: "CastTime",
+        castTime: 2000
+    }, ],
+    events: [{
+        event: "OnProjectileHitUnit",
+        actions: [{
+            action: "AttachEffect",
+            effectName: "Frost Bolt",
+            target: "ProjectileTarget",
+            effectDuration: 4500,
+            effectBehaviors: [{
+                behavior: "MovementSlow",
+                percentage: 50
+            }, ]
+        }, {
+            action: "Damage",
+            target: "ProjectileTarget",
+            minDamage: 425,
+            maxDamage: 475,
+        }, ]
+    }, ]
+}, {
+    name: "Fireball",
+    behavior: [{
+            behavior: "UnitTarget"
+        },
+        {
+            behavior: "CastTime",
+            castTime: "2000"
+        },
+    ],
+    events: [{
+        event: "OnProjectileHitUnit",
+        actions: [{
+            action: "AttachEffect",
+            effectName: "Fireball",
+            target: "ProjectileTarget",
+            effectDuration: 4500,
+            effectBehaviors: [{
+                behavior: "DamageOverTime",
+                damage: 10,
+                time: 500,
+            }, ]
+        }, {
+            action: "Damage",
+            target: "ProjectileTarget",
+        }, ]
+    }, ]
+}, {
+    name: "Arcane Missiles",
+    behavior: "BEHAVIOR_UNIT_TARGET | BEHAVIOR_CHANNELED"
+}, {
+    name: "Frost Nova",
+    behavior: "BEHAVIOR_NO_TARGET | BEHAVIOR_AOE"
+}, {
+    name: "Blizzard",
+    behavior: "BEHAVIOR_POINT | BEHAVIOR_AOE | BEHAVIOR_CHANNELLED"
+}, {
+    name: "Flamestrike",
+    behavior: "BEHAVIOR_POINT | BEHAVIOR_AOE | BEHAVIOR_CAST_TIME"
+}, {
+    name: "Arcane Explosion",
+    behavior: "BEHAVIOR_NO_TARGET | BEHAVIOR_AOE"
+}, {
+    name: "Frost Nova",
+    behavior: "BEHAVIOR_NO_TARGET"
+}, ]
