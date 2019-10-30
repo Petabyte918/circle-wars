@@ -4,8 +4,13 @@ export class SpellcasterSystem {
     step(_entities) {
         const entities = pick(_entities, e => e.components.player && e.components.player.spellcastPending)
         for (let entityKey in entities) {
-            console.log(`${entityKey} casts spell: ${entities[entityKey].components.player.spellcastPending}`)
             entities[entityKey].components.player.spellcastPending = false
+            if (!entities[entityKey].components.spellbook ||
+                !entities[entityKey].components.spellbook[entities[entityKey].components.player.spellcastPending - 1] ||
+                !entities[entityKey].components.spellbook[entities[entityKey].components.player.spellcastPending - 1].castable) {
+                return console.log(`spell doesn't exist or isn't castable`)
+            }
+
         }
     }
 }
