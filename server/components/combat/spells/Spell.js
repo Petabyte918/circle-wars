@@ -1,9 +1,15 @@
+import { CastableBehavior } from "./behaviors/Castable"
+
 export class Spell {
     name = 'spell'
     spellName
-    castable
+    behaviors
     constructor(name, castable) {
         this.spellName = name
-        this.castable = castable
+        if (castable) this.addBehavior(new CastableBehavior())
+    }
+
+    addBehavior(behavior) {
+        this.behaviors[behavior.name] = behavior
     }
 }
