@@ -1,4 +1,4 @@
-import {Vectors} from './Vectors'
+import { Vectors } from './Vectors'
 
 export class Incoming {
 
@@ -7,6 +7,13 @@ export class Incoming {
         this.hero = hero
 
         this.directions(socket, hero)
+        this.combat(socket, hero)
+    }
+
+    combat(socket, hero) {
+        socket.on('target', target => {
+            console.log(target)
+        })
     }
 
     directions(socket, hero) {
