@@ -10,6 +10,7 @@ export class Spell {
     }
 
     addBehavior(behavior) {
+        console.log(behavior.name)
         this.behaviors[behavior.name] = behavior
     }
 }
