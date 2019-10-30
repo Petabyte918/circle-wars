@@ -2,7 +2,7 @@ import {Vectors} from './Vectors'
 
 export class Incoming {
 
-    constructor(socket,hero, entities) {
+    constructor(socket, hero, entities) {
         this.socket = socket
         this.hero = hero
 
@@ -10,6 +10,11 @@ export class Incoming {
     }
 
     directions(socket, hero) {
+        socket.on('rotation', rotation => {
+            hero.components.rotation.value = rotation
+            hero.components.dynamic.dirty = true
+        })
+
         socket.on('startUp', () => {
             hero.components.player.up = true
             calculateAcceleration()

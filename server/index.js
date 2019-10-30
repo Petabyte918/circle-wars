@@ -1,5 +1,6 @@
-import {Hero} from './Hero'
+import {Hero} from './prefabs/Hero'
 import {Player} from './components/Player'
+import {TimerSystem} from './systems/Timer'
 import {PhysicsSystem} from './systems/Physics'
 import {EntityBroadcastSystem} from './systems/EntityBroadcast'
 import {Vectors} from './Vectors'
@@ -12,6 +13,9 @@ import {Health} from './components/Health'
 import {Dynamic} from './components/Dynamic'
 import {Deleted} from './components/Deleted'
 
+import {Timer} from './components/generic/Timer'
+import {WarmUpTimer} from './components/combat/WarmUpTimer'
+
 import {Incoming} from './Incoming'
 
 const express = require('express')
@@ -22,7 +26,7 @@ const io = require('socket.io')(http)
 const ticLength = 25
 
 const entities = {}
-const systems = [new PhysicsSystem(ticLength), new EntityBroadcastSystem(io)]
+const systems = [new PhysicsSystem(ticLength), new EntityBroadcastSystem(io), new TimerSystem(ticLength)]
 
 app.use(express.static('/home/ubuntu/dev/cw-client/dist/cw-client'))
 
@@ -36,6 +40,8 @@ http.listen(80, function() {
 const staticEntity = new Entity()
     .addComponent(new Position(-50,-50))
     .addComponent(new Collider('rect'))
+    .addComponent(new Timer(2000))
+    .addComponent(new WarmUpTimer(2000))
 entities[staticEntity.id] = staticEntity
 
 
