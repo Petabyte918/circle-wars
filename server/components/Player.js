@@ -6,6 +6,7 @@ export class Player {
     down = false
     left = false
     right = false
+    spellcastPending = false
     constructor(id) {
         this.socketId = id
     }
