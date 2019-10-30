@@ -1,5 +1,5 @@
 import { pick } from 'underscore'
-export class TimerSystem {
+export class SpellcasterSystem {
     constructor() { }
     step(_entities) {
         const entities = pick(_entities, e => e.components.player && e.components.player.spellcastPending)

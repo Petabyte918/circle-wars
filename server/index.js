@@ -15,6 +15,7 @@ import { Timer } from './components/generic/Timer'
 import { WarmUpTimer } from './components/combat/WarmUpTimer'
 
 import { Incoming } from './Incoming'
+import { SpellcasterSystem } from './systems/Spellcaster'
 
 const express = require('express')
 const app = express();
@@ -24,7 +25,12 @@ const io = require('socket.io')(http)
 const ticLength = 25
 
 const entities = {}
-const systems = [new PhysicsSystem(ticLength), new EntityBroadcastSystem(io), new TimerSystem(ticLength)]
+const systems = [
+    new PhysicsSystem(ticLength),
+    new EntityBroadcastSystem(io),
+    new TimerSystem(ticLength),
+    new SpellcasterSystem(),
+]
 
 app.use(express.static('/home/ubuntu/dev/cw-client/dist/cw-client'))
 
