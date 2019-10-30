@@ -8,6 +8,7 @@ export class SpellcasterSystem {
             if (!entities[entityKey].components.spellbook ||
                 !entities[entityKey].components.spellbook[entities[entityKey].components.player.spellcastPending - 1] ||
                 !entities[entityKey].components.spellbook[entities[entityKey].components.player.spellcastPending - 1].castable) {
+                console.log(entities[entityKey].components.spellbook)
                 return console.log(`spell doesn't exist or isn't castable`)
             }
 
