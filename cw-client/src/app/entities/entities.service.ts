@@ -15,7 +15,7 @@ export class EntitiesService {
   newEntities(entities) {
     this.dirty = true
     this.deleteDeletedEntities(entities)
-    this.entities = {...this.entities, ...entities}
+    this.entities = { ...this.entities, ...entities }
     if (!this.playerEntityId && this.entities) {
       for (let entityId in this.entities) {
         if (this.entities[entityId].components.player && this.entities[entityId].components.player.socketId === this.playerSocketId) {
@@ -48,4 +48,6 @@ export class EntitiesService {
     }
     return result
   }
+
+
 }

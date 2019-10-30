@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { WebsocketService } from '../websocket/websocket.service'
 import { EntitiesService } from '../entities/entities.service'
+import { TargetingService } from '../targeting/targeting.service'
 import { PhysicsSystem } from '../../../../dist/systems/Physics'
 
 @Component({
@@ -12,13 +13,16 @@ export class GameWindowComponent implements AfterViewInit {
 
   @ViewChild('canvas') canvas: ElementRef
   private context: CanvasRenderingContext2D
-  private playerPosition
+  playerPosition
+  playerRotation
+  mouseX
+  mouseY
 
-  private frameCount = 0
-  private dirtyFrameCount = 0
+  frameCount = 0
+  dirtyFrameCount = 0
 
   private timeLastFrame
-  private ticLength
+  ticLength
 
   private serverPhysics = new PhysicsSystem()
 
@@ -28,24 +32,24 @@ export class GameWindowComponent implements AfterViewInit {
   private right = false
 
   constructor(
-    private io : WebsocketService,
+    private io: WebsocketService,
     private e: EntitiesService,
+    private targeter: TargetingService,
   ) {
     console.log('connecting')
     io.connect()
-   }
+  }
 
   ngAfterViewInit() {
     this.context = (this.canvas.nativeElement as HTMLCanvasElement).getContext('2d');
-    this.context.translate(300,150)
-    console.log(this.context)
+    this.context.translate(300, 150)
     this.draw()
   }
-  
+
   private draw() {
     requestAnimationFrame(() => this.draw())
     this.context.fillStyle = '#666'
-    this.context.fillRect(-300,-150,600,300)
+    this.context.fillRect(-300, -150, 600, 300)
     if (this.e.entities) {
       this.context.save()
 
@@ -84,41 +88,45 @@ export class GameWindowComponent implements AfterViewInit {
   }
 
   private drawPlayer(entity) {
-    this.drawPlayerEntity(entity, '#600')
+    this.drawPlayerEntity(entity, '#600', this.playerRotation)
+  }
+
+  private drawOtherPlayer(entity) {
+    this.drawPlayerEntity(entity, '#060')
   }
 
   private drawOtherEntities(entities) {
     for (let id in entities) {
       if (id === this.e.playerEntityId) continue
       let entity = entities[id]
-      if (entity.components.collider){
+      if (entity.components.collider) {
         if (entity.components.collider.type === 'circle') {
-          this.drawPlayer(entity)
-        } else if(entity.components.collider.type === 'rect') {
+          this.drawOtherPlayer(entity)
+        } else if (entity.components.collider.type === 'rect') {
           this.drawRect(entity.components.position.x + entity.components.collider.offsetX, entity.components.position.y + entity.components.collider.offsetY, entity.components.collider.width, entity.components.collider.height)
         }
       }
     }
   }
 
-  private drawPlayerEntity(entity, color) {
+  private drawPlayerEntity(entity, color, rot = undefined) {
     const x = entity.components.position.x + entity.components.collider.offsetX
     const y = entity.components.position.y + entity.components.collider.offsetY
-    const rot = entity.components.rotation.value
+    rot = rot || entity.components.rotation.value
     const rad = entity.components.collider.radius
     this.context.save()
-    this.context.translate(x,y)
+    this.context.translate(x, y)
     this.context.rotate(rot)
-    this.drawCircle(0,0, rad, color)
+    this.drawCircle(0, 0, rad, color)
     this.context.beginPath()
-    this.context.moveTo(0,0)
-    this.context.lineTo(rad,0)
+    this.context.moveTo(0, 0)
+    this.context.lineTo(rad, 0)
     this.context.lineWidth = 2
     this.context.stroke()
     this.context.restore()
   }
 
-  private drawCircle(x,y,r,c) {
+  private drawCircle(x, y, r, c) {
     this.context.beginPath();
     this.context.arc(x, y, r, 0, 2 * Math.PI, true);
     this.context.fillStyle = '#faa'
@@ -129,10 +137,10 @@ export class GameWindowComponent implements AfterViewInit {
     this.context.stroke()
   }
 
-  private drawRect(x,y,w,h) {
+  private drawRect(x, y, w, h) {
     h = h || w
     this.context.beginPath();
-    this.context.rect(x-w/2, y-h/2, w, h);
+    this.context.rect(x - w / 2, y - h / 2, w, h);
     this.context.fillStyle = '#faa'
     this.context.fill()
 
@@ -141,7 +149,11 @@ export class GameWindowComponent implements AfterViewInit {
     this.context.stroke()
   }
 
-  private keyDown(e) {
+  keyDown(e) {
+    if (e.key === 'Tab') {
+      this.targeter.changeTarget()
+      e.preventDefault()
+    }
     if (e.key === 'w' || e.key === 'ArrowUp') {
       if (!this.up) {
         this.up = true
@@ -168,7 +180,7 @@ export class GameWindowComponent implements AfterViewInit {
     }
   }
 
-  private keyUp(e) {
+  keyUp(e) {
     if (e.key === 'w' || e.key === 'ArrowUp') {
       if (this.up) {
         this.up = false
@@ -193,6 +205,22 @@ export class GameWindowComponent implements AfterViewInit {
         this.io.endRight()
       }
     }
+  }
+
+  mouseMove(event) {
+    const canvas = this.canvas.nativeElement
+    const x = event.clientX - canvas.offsetLeft
+    const y = event.clientY - canvas.offsetTop
+    this.mouseX = x - canvas.clientWidth / 2
+    this.mouseY = y - canvas.clientHeight / 2
+    const oldRotation = this.e.entities[this.e.playerEntityId].components.rotation.value
+    const newRotation = Math.atan2(this.mouseY, this.mouseX)
+    this.sendRotation(oldRotation, newRotation)
+    this.playerRotation = newRotation
+  }
+
+  sendRotation(oldRotation, newRotation) {
+    if (Math.abs(oldRotation - newRotation) > Math.PI / 10) this.io.rotation(newRotation)
   }
 
 }

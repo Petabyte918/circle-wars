@@ -1,0 +1,20 @@
+<h3>Item</h3>
+<form-name
+  [(value)]="name"
+  (valueChange)="nameChange.emit(name)"
+></form-name>
+<form-description
+  [(value)]="description"
+  (valueChange)="descriptionChange.emit(description)"
+></form-description>
+<div>
+  <div><strong>Tradable</strong></div>
+  <p-boolean
+    [(value)]="tradable"
+    (valueChange)="tradableChange.emit(tradable)"
+  ></p-boolean>
+</div>
+<form-notes
+  [(value)]="notes"
+  (valueChange)="notesChange.emit(notes)"
+></form-notes>

@@ -1,0 +1,10 @@
+<div class="bg">
+  <div
+    class="start"
+    *ngIf="!start"
+    (click)="startGame()"
+  >
+    Start
+  </div>
+  <app-game-window *ngIf="start"></app-game-window>
+</div>

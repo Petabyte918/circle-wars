@@ -52,4 +52,8 @@ export class WebsocketService {
     this.socket.emit('endRight', true)
   }
 
+  rotation(rotation) {
+    this.socket.emit('rotation', rotation)
+  }
+
 }
