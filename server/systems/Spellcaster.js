@@ -8,7 +8,7 @@ export class SpellcasterSystem {
             entities[entityKey].components.player.spellcastPending = false
             if (!entities[entityKey].components.spellbook ||
                 !entities[entityKey].components.spellbook.value[spellIndex] ||
-                !entities[entityKey].components.spellbook.value[spellIndex].castable) {
+                !entities[entityKey].components.spellbook.value[spellIndex].behaviors.castable) {
                 return console.log(`spell doesn't exist or isn't castable`)
             }
             const spell = entities[entityKey].components.spellbook.value[spellIndex]
