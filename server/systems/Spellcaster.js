@@ -3,6 +3,7 @@ export class SpellcasterSystem {
     constructor() { }
     step(_entities) {
         const entities = pick(_entities, e => e.components.caster && e.components.caster.spellcastPending)
+        console.log(entities)
         for (let entityKey in entities) {
             const spellIndex = entities[entityKey].components.caster.spellcastPending - 1
             entities[entityKey].components.caster.spellcastPending = false
