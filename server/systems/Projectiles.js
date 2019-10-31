@@ -4,7 +4,7 @@ export class ProjectilesSystem {
     step(_entities) {
         const entities = pick(_entities, e => e.components.type && e.components.type.value === 'projectile')
         entities.forEach(projectile => {
-            const velocity = 
+            //const velocity = 
         })
     }
 }
