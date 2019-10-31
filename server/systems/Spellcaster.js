@@ -2,10 +2,10 @@ import { pick } from 'underscore'
 export class SpellcasterSystem {
     constructor() { }
     step(_entities) {
-        const entities = pick(_entities, e => e.components.player && e.components.player.spellcastPending)
+        const entities = pick(_entities, e => e.components.caster && e.components.caster.spellcastPending)
         for (let entityKey in entities) {
-            const spellIndex = entities[entityKey].components.player.spellcastPending - 1
-            entities[entityKey].components.player.spellcastPending = false
+            const spellIndex = entities[entityKey].components.caster.spellcastPending - 1
+            entities[entityKey].components.caster.spellcastPending = false
             if (!entities[entityKey].components.spellbook ||
                 !entities[entityKey].components.spellbook.value[spellIndex] ||
                 !entities[entityKey].components.spellbook.value[spellIndex].behaviors.castable) {

@@ -58,7 +58,7 @@ function addEntity(entity) {
 function playerConnect(socket) {
     const hero = new Hero('All Might')
         .addComponent(new Player(socket.id))
-        .addComponent(new Spellbook([new Spell('Frost Nova', true)]))
+        .addComponent(new Spellbook([new Spell('Frost Bolt', true)]))
 
     console.log('a user connected', hero.id)
 

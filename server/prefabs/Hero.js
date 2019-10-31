@@ -7,6 +7,7 @@ import { Drag } from '../components/physics/Drag'
 import { Collider } from "../components/physics/Collider"
 import { Rotation } from "../components/physics/Rotation"
 import { Targetable } from "../components/combat/Targetable"
+import { Caster } from "../components/combat/spells/Caster";
 
 export class Hero extends Entity {
     constructor(name) {
@@ -19,5 +20,6 @@ export class Hero extends Entity {
             .addComponent(new Collider())
             .addComponent(new Dynamic())
             .addComponent(new Targetable())
+            .addComponent(new Caster())
     }
 }
