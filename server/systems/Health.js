@@ -9,6 +9,7 @@ export class HealthSystem {
                 return this.die(entity)
             }
             entity.components.health.currentHealth += entity.components.health.regen
+            entity.components.dynamic.dirty = true
         }
     }
 
@@ -21,5 +22,6 @@ export class HealthSystem {
         entity.components.position.y = 0
         entity.components.health.currentHealth = entity.components.health.value
         entity.components.mana.currentMana = entity.components.mana.value
+        entity.components.dynamic.dirty = true
     }
 }
