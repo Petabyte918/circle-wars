@@ -19,6 +19,7 @@ import { EntityBroadcastSystem } from './systems/EntityBroadcast'
 import { SpellcasterSystem } from './systems/Spellcaster'
 import { ProjectilesSystem } from './systems/Projectiles'
 import { HealthSystem } from './systems/Health'
+import { ManaSystem } from './systems/Mana'
 
 const express = require('express')
 const app = express();
@@ -35,6 +36,7 @@ const systems = [
     new SpellcasterSystem(),
     new ProjectilesSystem(),
     new HealthSystem(ticLength),
+    new ManaSystem(ticLength),
 ]
 
 app.use(express.static('/home/ubuntu/dev/cw-client/dist/cw-client'))
