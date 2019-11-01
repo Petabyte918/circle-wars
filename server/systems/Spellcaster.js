@@ -10,7 +10,7 @@ export class SpellcasterSystem {
                 entity.components.caster.spellKeyDown = false
                 if (!entity.components.spellbook.value[spellIndex]) return
                 if (entity.components.spellbook.value[spellIndex].events.onKeyDown) {
-                    console.log(`handle actions ${entity.components.spellbook.value[spellIndex].events.onKeyDown.actions}`)
+                    console.log(`handle actions ${JSON.stringify(entity.components.spellbook.value[spellIndex].events.onKeyDown)}`)
                 }
             }
             if (entity.components.caster.spellKeyUp) {
@@ -18,7 +18,7 @@ export class SpellcasterSystem {
                 entity.components.caster.spellKeyUp = false
                 if (!entity.components.spellbook.value[spellIndex]) return
                 if (entity.components.spellbook.value[spellIndex].events.onKeyUp) {
-                    console.log(`handle actions ${entity.components.spellbook.value[spellIndex].events.onKeyUp.actions}`)
+                    console.log(`handle actions ${entity.components.spellbook.value[spellIndex].events.onKeyUp}`)
                 }
             }
         }
