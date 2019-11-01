@@ -1,4 +1,5 @@
 import { pick } from 'underscore'
+import { Vectors } from '../Vectors'
 export class SpellcasterSystem {
     ticLength
 
@@ -15,6 +16,8 @@ export class SpellcasterSystem {
                 entity.components.caster.spellKeyDown = false
                 if (!entity.components.spellbook.value[spellIndex]) return
                 if (entity.components.spellbook.value[spellIndex].events.onKeyDown) {
+                    if (Vectors.magnitude(entity.components.acceleration) > 0) return
+                    if (entity.components.mana.currentMana < entity.components.spellbook.value[spellIndex].manaCost) return
                     this.handleActions(entity, spellIndex, entity.components.spellbook.value[spellIndex].events.onKeyDown.actions)
                 }
             }

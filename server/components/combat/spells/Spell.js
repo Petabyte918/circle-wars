@@ -3,10 +3,12 @@ import { CastableBehavior } from "./behaviors/Castable"
 export class Spell {
     name = 'spell'
     spellName
+    manaCost
     behaviors = {}
     events = {}
-    constructor(name) {
+    constructor(name, manaCost) {
         this.spellName = name
+        this.manaCost = manaCost
     }
 
     addBehavior(behavior) {
