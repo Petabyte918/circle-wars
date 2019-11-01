@@ -1,6 +1,11 @@
 import { pick } from 'underscore'
 export class HealthSystem {
-    constructor() { }
+    ticLength
+
+    constructor(ticLength) {
+        this.ticLength = ticLength || 25
+    }
+
     step(_entities) {
         const entities = pick(_entities, e => e.components.health && e.components.health.currentHealth !== e.components.health.value)
         for (let entityKey in entities) {
