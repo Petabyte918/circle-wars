@@ -28,8 +28,7 @@ export class SpellcasterSystem {
             }
         }
         const castingEntities = pick(_entities, e => e.components.caster && e.components.caster.casting)
-        console.log(castingEntities)
-        for (let entityKey of castingEntities) {
+        for (let entityKey in castingEntities) {
             const entity = castingEntities[entityKey]
             if (entity.components.caster.castTimeRemaining <= 0) {
                 if (entity.components.spellbook.value[entity.components.caster.casting].events.onFinishCasting) {
