@@ -6,12 +6,14 @@ export class SpellcasterSystem {
         for (let entityKey in entities) {
             const entity = entities[entityKey]
             if (entity.components.caster.spellKeyDown) {
+                if (!entity.components.spellbook.value[entity.components.caster.spellKeyDown - 1]) return
                 if (entity.components.spellbook.value[entity.components.caster.spellKeyDown - 1].events.onKeyDown) {
                     console.log(`handle actions ${entity.components.spellbook.value[entity.components.caster.spellKeyDown].events.onKeyDown}`)
                     entity.components.caster.spellKeyDown = false
                 }
             }
             if (entity.components.caster.spellKeyUp) {
+                if (!entity.components.spellbook.value[entity.components.caster.spellKeyUp - 1]) return
                 if (entity.components.spellbook.value[entity.components.caster.spellKeyUp - 1].events.onKeyUp) {
                     console.log(`handle actions ${entity.components.spellbook.value[entity.components.caster.spellKeyUp].events.onKeyUp}`)
                     entity.components.caster.spellKeyUp = false
