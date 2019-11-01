@@ -51,6 +51,7 @@ export class SpellcasterSystem {
     }
 
     beginCasting(entity, spellIndex, action) {
+        entity.components.dynamic.dirty = true
         entity.components.caster.casting = spellIndex
         entity.components.caster.castTimeRemaining = action.castTime
         entity.components.caster.castTime = action.castTime
