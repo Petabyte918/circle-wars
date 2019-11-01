@@ -1,3 +1,4 @@
+import { Spell } from "../../components/combat/spells/Spell"
 import { OnKeyDown } from "../../components/combat/spells/events/OnKeyDown"
 import { BeginCasting } from "../../components/combat/spells/actions/BeginCasting"
 import { OnFinishCasting } from "../../components/combat/spells/events/OnFinishCasting"
