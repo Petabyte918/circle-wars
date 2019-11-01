@@ -51,6 +51,7 @@ export class SpellcasterSystem {
         actions.forEach(a => {
             if (a.name === 'beginCasting') this.beginCasting(entity, spellIndex, a)
             if (a.name === 'createProjectile') this.createProjectile(entity, spellIndex, a)
+            if (a.name === 'chargeMana') this.chargeMana(entity, spellIndex, a)
         })
     }
 
@@ -59,6 +60,11 @@ export class SpellcasterSystem {
         entity.components.caster.casting = spellIndex
         entity.components.caster.castTimeRemaining = action.castTime
         entity.components.caster.castTime = action.castTime
+    }
+
+    chargeMana(entity, spellIndex, action) {
+        entity.components.mana.currentMana -= action.value
+        entity.components.dynamic.dirty = true
     }
 
     createProjectile(entity, spellIndex, action) {
