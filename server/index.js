@@ -5,7 +5,7 @@ import { Position } from './components/physics/Position'
 import { Collider } from './components/physics/Collider'
 import { Deleted } from './components/Deleted'
 
-import { Spell } from './components/combat/spells/Spell'
+import { FrostBolt } from './prefabs/spells/FrostBolt'
 import { Spellbook } from './components/combat/spells/Spellbook'
 
 import { Timer } from './components/generic/Timer'
@@ -58,7 +58,7 @@ function addEntity(entity) {
 function playerConnect(socket) {
     const hero = new Hero('All Might')
         .addComponent(new Player(socket.id))
-        .addComponent(new Spellbook([new Spell('Frost Bolt', true)]))
+        .addComponent(new Spellbook([new FrostBolt()]))
 
     console.log('a user connected', hero.id)
 
