@@ -15,10 +15,7 @@ export class Incoming {
         socket.on('castSpellDown', spellNumber => hero.components.caster.spellKeyDown = spellNumber)
         socket.on('castSpellUp', spellNumber => hero.components.caster.spellKeyUp = spellNumber)
         socket.on('stopCasting', () => { })
-        socket.on('debug', () => {
-            console.log('minusing health', hero.components.health)
-            hero.components.health.currentHealth -= 10
-        })
+        socket.on('debug', () => hero.components.health.currentHealth -= 10)
     }
 
     directions(socket, hero) {
@@ -61,6 +58,7 @@ export class Incoming {
         })
 
         function calculateAcceleration() {
+            if (hero.components.caster.casting !== false) return
             const up = hero.components.player.up
             const down = hero.components.player.down
             const left = hero.components.player.left
