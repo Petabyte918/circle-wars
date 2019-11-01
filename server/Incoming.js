@@ -15,7 +15,10 @@ export class Incoming {
         socket.on('castSpellDown', spellNumber => hero.components.caster.spellKeyDown = spellNumber)
         socket.on('castSpellUp', spellNumber => hero.components.caster.spellKeyUp = spellNumber)
         socket.on('stopCasting', () => { })
-        socket.on('debug', () => hero.components.health.currentHealth -= 10)
+        socket.on('debug', () => {
+            console.log('minusing health', hero.components.health)
+            hero.components.health.currentHealth -= 10
+        })
     }
 
     directions(socket, hero) {
