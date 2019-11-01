@@ -19,8 +19,8 @@ export class HealthSystem {
     }
 
     die(entity) {
-        entity.components.accelaration.x = 0
-        entity.components.accelaration.y = 0
+        entity.components.acceleration.x = 0
+        entity.components.acceleration.y = 0
         entity.components.velocity.x = 0
         entity.components.velocity.y = 0
         entity.components.position.x = 0
