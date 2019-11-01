@@ -14,6 +14,8 @@ export class Incoming {
         socket.on('target', target => hero.components.player.target = target)
         socket.on('castSpellDown', spellNumber => hero.components.caster.spellKeyDown = spellNumber)
         socket.on('castSpellUp', spellNumber => hero.components.caster.spellKeyUp = spellNumber)
+        socket.on('stopCasting', () => { })
+        socket.on('debug', () => hero.components.health.currentHealth -= 10)
     }
 
     directions(socket, hero) {
