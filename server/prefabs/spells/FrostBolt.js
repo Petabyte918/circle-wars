@@ -7,7 +7,7 @@ import { CreateProjectile } from "../../components/combat/spells/actions/CreateP
 export class FrostBolt extends Spell {
     constructor() {
         super("Frost Bolt")
-        this.addEvent(new OnKeyDown(new BeginCasting(2000)))
+        this.addEvent(new OnKeyDown([new BeginCasting(2000)]))
             .addEvent(new OnFinishCasting(new CreateProjectile(2)))
     }
 }
