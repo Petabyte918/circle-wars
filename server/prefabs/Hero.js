@@ -1,5 +1,6 @@
 import { Entity } from "../Entity";
 import { Health } from "../components/Health";
+import { Health } from "../components/Mana";
 import { Name } from "../components/Name";
 import { Dynamic } from "../components/Dynamic";
 import { Physics } from "../components/physics/Physics";
@@ -13,7 +14,8 @@ export class Hero extends Entity {
     constructor(name) {
         super()
         this.addComponent(new Name(name))
-            .addComponent(new Health(20))
+            .addComponent(new Health(100))
+            .addComponent(new Mana(100))
             .addComponent(new Physics(0, 0))
             .addComponent(new Rotation())
             .addComponent(new Drag())

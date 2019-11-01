@@ -38,6 +38,7 @@ export class SpellcasterSystem {
                 entity.components.caster.casting = false
                 entity.components.caster.castTimeRemaining = 0
                 entity.components.caster.castTime = 0
+                return
             }
             entity.components.caster.castTimeRemaining -= this.ticLength
         }
