@@ -14,6 +14,7 @@ export class HealthSystem {
                 return this.die(entity)
             }
             entity.components.health.currentHealth += entity.components.health.regen
+            if (entity.components.health.currentHealth > entity.components.health.value) entity.components.health.currentHealth = entity.components.health.value
             entity.components.dynamic.dirty = true
         }
     }
