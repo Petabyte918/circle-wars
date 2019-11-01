@@ -4,13 +4,18 @@ export class Spell {
     name = 'spell'
     spellName
     behaviors = {}
-    constructor(name, castable) {
+    events = {}
+    constructor(name) {
         this.spellName = name
-        if (castable) this.addBehavior(new CastableBehavior())
     }
 
     addBehavior(behavior) {
-        console.log(behavior.name)
         this.behaviors[behavior.name] = behavior
+        return this
+    }
+
+    addEvent(event) {
+        this.events[event.name] = event
+        return this
     }
 }

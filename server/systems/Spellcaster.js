@@ -2,18 +2,19 @@ import { pick } from 'underscore'
 export class SpellcasterSystem {
     constructor() { }
     step(_entities) {
-        const entities = pick(_entities, e => e.components.caster && e.components.caster.spellcastPending)
+        const entities = pick(_entities, e => e.components.caster && (e.components.caster.spellKeyDown || e.components.caster.spellKeyUp))
         for (let entityKey in entities) {
-            const spellIndex = entities[entityKey].components.caster.spellcastPending - 1
-            entities[entityKey].components.caster.spellcastPending = false
-            if (!entities[entityKey].components.spellbook ||
-                !entities[entityKey].components.spellbook.value[spellIndex] ||
-                !entities[entityKey].components.spellbook.value[spellIndex].behaviors.castable) {
-                return console.log(`spell doesn't exist or isn't castable`)
+            const entity = entities[entityKey]
+            if (entity.components.caster.spellKeyDown) {
+                if (entity.components.spellbook.value[entity.components.caster.spellKeyDown].events.onKeyDown) {
+                    console.log(`handle actions ${entity.components.spellbook.value[entity.components.caster.spellKeyDown].events.onKeyDown}`)
+                }
             }
-            const spell = entities[entityKey].components.spellbook.value[spellIndex]
-            return console.log(`entity ${entityKey} is casting spell ${spell.spellName}`)
-
+            if (entity.components.caster.spellKeyUp) {
+                if (entity.components.spellbook.value[entity.components.caster.spellKeyDown].events.onKeyUp) {
+                    console.log(`handle actions ${entity.components.spellbook.value[entity.components.caster.spellKeyUp].events.onKeyUp}`)
+                }
+            }
         }
     }
 }
