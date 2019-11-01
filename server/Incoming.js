@@ -12,7 +12,8 @@ export class Incoming {
 
     combat(socket, hero) {
         socket.on('target', target => hero.components.player.target = target)
-        socket.on('castSpell', spellNumber => hero.components.caster.spellcastPending = spellNumber)
+        socket.on('castSpellDown', spellNumber => hero.components.caster.spellKeyDown = spellNumber)
+        socket.on('castSpellUp', spellNumber => hero.components.caster.spellKeyUp = spellNumber)
     }
 
     directions(socket, hero) {

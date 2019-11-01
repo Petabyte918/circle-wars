@@ -1,7 +1,10 @@
 export class Caster {
     name = 'caster'
-    spellcastPending = false
+    spellKeyDown = false
+    spellKeyUp = false
+
     casting = false
     castTimeRemaining = 0
+
     constructor() { }
 }
