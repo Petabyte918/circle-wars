@@ -52,6 +52,7 @@ export class SpellcasterSystem {
     }
 
     beginCasting(entity, spellIndex, action) {
+        console.log('begin casting ')
         entity.components.caster.casting = spellIndex
         entity.components.caster.castTimeRemaining = action.castTime
         entity.components.caster.castTime = action.castTime
