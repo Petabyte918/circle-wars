@@ -27,7 +27,7 @@ export class SpellcasterSystem {
                 }
             }
         }
-        const castingEntities = pick(_entities, e => e.components.caster && e.components.caster.casting)
+        const castingEntities = pick(_entities, e => e.components.caster && (e.components.caster.casting !== false))
         for (let entityKey in castingEntities) {
             const entity = castingEntities[entityKey]
             console.log(entity)
@@ -52,7 +52,6 @@ export class SpellcasterSystem {
     }
 
     beginCasting(entity, spellIndex, action) {
-        console.log('begin casting ')
         entity.components.caster.casting = spellIndex
         entity.components.caster.castTimeRemaining = action.castTime
         entity.components.caster.castTime = action.castTime
