@@ -1,6 +1,6 @@
 import { Entity } from "../Entity";
 import { Health } from "../components/Health";
-import { Health } from "../components/Mana";
+import { Mana } from "../components/Mana";
 import { Name } from "../components/Name";
 import { Dynamic } from "../components/Dynamic";
 import { Physics } from "../components/physics/Physics";
